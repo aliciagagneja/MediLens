@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Understanding Your Medical Reports Just Got Easier</h1>
+            <p>Upload your medical report and let AI explain it in simple language</p>
+            <a href="/upload" class="btn btn-primary btn-large">Upload Your Report</a>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2>How MediLens Works</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3>Upload PDF</h3>
+                <p>Simply upload your medical report in PDF format</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI Analysis</h3>
+                <p>Our AI analyzes your report and explains it clearly</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>Save & Compare</h3>
+                <p>Save reports and compare them over time</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="container">
+        <h2>Ready to understand your medical reports?</h2>
+        <a href="/upload" class="btn btn-secondary">Get Started</a>
+    </div>
+</section>
+{% endblock %}

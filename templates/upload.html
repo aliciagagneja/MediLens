@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container upload-container">
+    <div class="upload-box">
+        <h1>Upload Medical Report</h1>
+        <p class="subtitle">Upload a PDF file of your medical report for analysis</p>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" name="file" accept=".pdf" required>
+                <label for="fileInput" class="file-label">
+                    <span>📁 Click to select PDF or drag here</span>
+                </label>
+            </div>
+            
+            <div id="fileName" class="file-name"></div>
+            <div id="errorMsg" class="error-message"></div>
+            <div id="loadingSpinner" class="loading" style="display:none;"></div>
+            
+            <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+                Analyze Report
+            </button>
+        </form>
+        
+        <p class="info-text">
+            <strong>Note:</strong> Only PDF files are supported. Your reports are processed securely.
+        </p>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('uploadForm');
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const errorMsg = document.getElementById('errorMsg');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const submitBtn = document.getElementById('submitBtn');
+
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            fileName.textContent = '✓ ' + this.files[0].name;
+            errorMsg.textContent = '';
+        }
+    });
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if (!fileInput.files.length) {
+            errorMsg.textContent = 'Please select a file';
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        
+        loadingSpinner.style.display = 'block';
+        submitBtn.disabled = true;
+        errorMsg.textContent = '';
+        
+        try {
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                window.location.href = `/results/${data.report_id}`;
+            } else {
+                errorMsg.textContent = data.error || 'Error uploading file';
+                loadingSpinner.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            errorMsg.textContent = 'Network error: ' + error.message;
+            loadingSpinner.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    });
+</script>
+{% endblock %}

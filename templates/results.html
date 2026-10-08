@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container results-container">
+    <div class="results-header">
+        <h1>Analysis Results</h1>
+        <p class="report-name">{{ filename }}</p>
+    </div>
+
+    <div class="results-content">
+        <!-- Summary Card -->
+        <div class="card">
+            <h2>📋 Summary</h2>
+            <p>{{ analysis.get('summary', 'No summary available') }}</p>
+        </div>
+
+        <!-- Disclaimer Card -->
+        <div class="card disclaimer-card">
+            <h3>⚠️ Medical Disclaimer</h3>
+            <p>{{ analysis.get('disclaimer', 'MediLens is an informational tool only. Always consult a healthcare professional for medical decisions.') }}</p>
+        </div>
+
+        <!-- Key Findings -->
+        {% if analysis.get('key_findings') %}
+        <div class="card">
+            <h2>🔍 Key Findings</h2>
+            <ul class="findings-list">
+                {% for finding in analysis['key_findings'] %}
+                <li>{{ finding }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Abnormal Values -->
+        {% if analysis.get('abnormal_values') %}
+        <div class="card warning-card">
+            <h2>⚠️ Values Outside Normal Range</h2>
+            <ul class="findings-list">
+                {% for value in analysis['abnormal_values'] %}
+                <li>{{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Medical Terms Explained -->
+        {% if analysis.get('medical_terms_explained') %}
+        <div class="card">
+            <h2>📚 Medical Terms Explained</h2>
+            <div class="terms-grid">
+                {% for term, explanation in analysis['medical_terms_explained'].items() %}
+                <div class="term-card">
+                    <strong>{{ term }}</strong>
+                    <p>{{ explanation }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="actions">
+            <a href="/saved" class="btn btn-secondary">View All Reports</a>
+            <a href="/upload" class="btn btn-primary">Analyze Another Report</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -2,3 +2,4 @@ Flask==2.3.0
 pyMuPDF==1.23.0
 python-dotenv==1.0.0
 anthropic==0.7.0
+httpx==0.27.2

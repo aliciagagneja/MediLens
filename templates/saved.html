@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container saved-container">
+    <h1>Saved Reports</h1>
+    
+    {% if reports %}
+    <div class="reports-list">
+        {% for report in reports %}
+        <div class="report-card">
+            <div class="report-info">
+                <h3>{{ report[1] }}</h3>
+                <p class="report-date">📅 {{ report[2] }}</p>
+            </div>
+            <div class="report-actions">
+                <a href="/results/{{ report[0] }}" class="btn btn-small btn-primary">View</a>
+                <button class="btn btn-small btn-danger" onclick="deleteReport({{ report[0] }})">Delete</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No saved reports yet.</p>
+        <a href="/upload" class="btn btn-primary">Upload Your First Report</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function deleteReport(reportId) {
+        if (confirm('Are you sure you want to delete this report?')) {
+            fetch(`/delete/${reportId}`, { method: 'POST' })
+                .then(() => location.reload())
+                .catch(err => alert('Error deleting report: ' + err));
+        }
+    }
+</script>
+{% endblock %}
