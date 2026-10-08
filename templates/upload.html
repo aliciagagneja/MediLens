@@ -68,7 +68,25 @@
             const data = await response.json();
             
             if (data.success) {
-                window.location.href = `/results/${data.report_id}`;
+                const successMsg = document.createElement('div');
+                successMsg.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #10b981;
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 6px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    font-weight: 500;
+                    z-index: 1000;
+                `;
+                successMsg.textContent = '✓ Report uploaded successfully! Analyzing...';
+                document.body.appendChild(successMsg);
+
+                setTimeout(() => {
+                    window.location.href = `/results/${data.report_id}`;
+                }, 1000);
             } else {
                 errorMsg.textContent = data.error || 'Error uploading file';
                 loadingSpinner.style.display = 'none';

@@ -177,11 +177,14 @@ main {
 .btn-primary {
     background: var(--primary);
     color: white;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
 }
 
 .btn-secondary {
@@ -312,8 +315,14 @@ main {
     background: white;
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.08);
     margin-bottom: 2rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
 }
 
 .card h2 {

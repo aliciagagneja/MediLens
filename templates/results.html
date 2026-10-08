@@ -11,7 +11,13 @@
         <!-- Summary Card -->
         <div class="card">
             <h2>📋 Summary</h2>
-            <p>{{ analysis.get('summary', 'No summary available') }}</p>
+            {% if analysis.get('summary') %}
+            <p>{{ analysis['summary'] }}</p>
+            {% elif analysis.get('error') %}
+            <p style="color: #ef4444;"><strong>Error:</strong> {{ analysis['error'] }}</p>
+            {% else %}
+            <p style="color: #999; font-style: italic;">Unable to generate a summary. Please try uploading the report again.</p>
+            {% endif %}
         </div>
 
         <!-- Disclaimer Card -->
