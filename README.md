@@ -11,7 +11,7 @@ MediLens helps users understand medical reports by extracting text, analyzing it
 ## Features (Current)
 
 ✅ **Upload Medical Reports** - Upload PDF medical reports  
-✅ **AI-Powered Analysis** - Claude AI analyzes reports and explains findings  
+✅ **AI-Powered Analysis** - Google Gemini analyzes reports and explains findings  
 ✅ **Simple Explanations** - Medical terminology explained in plain language  
 ✅ **Save Reports** - Store reports locally and access them anytime  
 ✅ **View History** - See all your uploaded reports with dates  
@@ -30,8 +30,8 @@ MediLens helps users understand medical reports by extracting text, analyzing it
 - **Backend:** Python + Flask
 - **Frontend:** HTML + CSS + JavaScript
 - **Database:** SQLite
-- **PDF Processing:** PyMuPDF (fitz)
-- **AI:** Anthropic Claude API
+- **PDF Processing:** Direct PDF input to Google Gemini
+- **AI:** Google Gemini API
 - **Deployment:** Flask dev server (local) / Can scale with Gunicorn
 
 ---
@@ -74,10 +74,10 @@ pip install -r requirements.txt
 
 ### Step 4: Set Up API Key
 
-1. Get your API key from [Anthropic Console](https://console.anthropic.com)
+1. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 2. Create a `.env` file in the project root:
    ```
-   ANTHROPIC_API_KEY=sk-ant-YOUR_KEY_HERE
+  GEMINI_API_KEY=your_google_ai_studio_key
    ```
 3. Replace `YOUR_KEY_HERE` with your actual key
 
@@ -99,11 +99,10 @@ Open your browser and go to: **http://localhost:5000**
 ## How It Works
 
 1. **Upload** → User uploads a medical report (PDF format)
-2. **Extract** → App extracts text from the PDF using PyMuPDF
-3. **Analyze** → Text is sent to Claude AI for analysis
-4. **Display** → AI-generated summary, key findings, and explanations shown
-5. **Save** → Report is stored in local SQLite database
-6. **Access** → User can view saved reports anytime
+2. **Analyze** → The PDF is sent directly to Google Gemini for analysis
+3. **Display** → AI-generated summary, key findings, and explanations shown
+4. **Save** → Report is stored in local SQLite database
+5. **Access** → User can view saved reports anytime
 
 ### User Flow
 
@@ -139,9 +138,9 @@ MediLens/
 
 ## API & Database
 
-### Claude API Integration
+### Google Gemini API Integration
 
-The app uses Claude 3.5 Sonnet to analyze medical reports. The system prompt instructs Claude to:
+The app sends uploaded PDF reports to the Gemini model configured in `app.py`. The system prompt instructs Gemini to:
 - Summarize the report in simple language
 - Identify important test values
 - Flag values outside normal ranges
@@ -156,20 +155,19 @@ The app uses Claude 3.5 Sonnet to analyze medical reports. The system prompt ins
 | id | INTEGER (PK) | Unique identifier |
 | filename | TEXT | Original PDF filename |
 | upload_date | TIMESTAMP | When report was uploaded |
-| extracted_text | TEXT | Raw text from PDF |
+| extracted_text | TEXT | Reserved for extracted report text |
 | summary | TEXT | AI summary |
 | key_findings | TEXT | JSON list of findings |
-| analysis_data | TEXT | Full JSON response from Claude |
+| analysis_data | TEXT | Full JSON response from Gemini |
 
 ---
 
 ## Current Limitations
 
 - ❌ No user authentication (all reports are in one shared database)
-- ❌ PDF extraction only works on text-based PDFs (not scanned/image-heavy PDFs)
 - ❌ Compare reports feature not yet implemented
 - ❌ No email/export functionality
-- ⚠️ Requires valid Anthropic API key with available credits
+- ⚠️ Requires a valid Google Gemini API key and available quota
 
 ---
 
@@ -177,11 +175,11 @@ The app uses Claude 3.5 Sonnet to analyze medical reports. The system prompt ins
 
 ### "No summary available" after upload
 **Issue:** API key is invalid or not set  
-**Fix:** Check `.env` file has correct `ANTHROPIC_API_KEY`, then refresh page
+**Fix:** Check that `.env` contains a valid `GEMINI_API_KEY`, then restart the app
 
-### "Error extracting PDF"
-**Issue:** PDF is image-based (scanned document)  
-**Fix:** Try a different PDF with searchable text
+### Gemini reports that the service is temporarily unavailable
+**Issue:** Gemini may be experiencing high demand or a temporary outage  
+**Fix:** Retry the upload in a minute. The app retries temporary service errors automatically.
 
 ### "Error uploading file"
 **Issue:** File type is not PDF  
