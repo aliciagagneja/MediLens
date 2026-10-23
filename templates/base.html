@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}MediLens - AI Medical Report Assistant{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="/" class="logo">MediLens</a>
+            <a href="/" class="logo">
+                <i class="fas fa-stethoscope"></i> MediLens
+            </a>
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/upload">Upload Report</a></li>
@@ -18,17 +22,38 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p><strong>Medical Disclaimer:</strong> MediLens is an informational tool only. It does NOT diagnose diseases, prescribe medicines, or replace professional medical advice. Always consult a qualified healthcare professional for medical decisions.</p>
-            <p>&copy; 2024 MediLens. All rights reserved.</p>
+            <div class="footer-section">
+                <h4>About MediLens</h4>
+                <p>MediLens is an AI-powered assistant that helps you understand medical reports in simple language.</p>
+                <p><strong>⚠️ Disclaimer:</strong> This tool is for informational purposes only. Always consult a qualified healthcare professional for medical decisions.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Features</h4>
+                <p>✓ Upload medical reports</p>
+                <p>✓ AI-powered summaries</p>
+                <p>✓ Save and compare reports</p>
+                <p>✓ Medical terms explained</p>
+            </div>
+            <div class="footer-section">
+                <h4>Privacy</h4>
+                <p>Your reports are processed securely. We do not store your actual documents after analysis.</p>
+                <p>Only report metadata is saved locally.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 MediLens. Built by students, for understanding medical reports.</p>
         </div>
     </footer>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

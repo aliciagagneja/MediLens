@@ -1,61 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container results-container">
+<div class="results-container">
+    <!-- Results Header -->
     <div class="results-header">
-        <h1>Analysis Results</h1>
-        <p class="report-name">{{ filename }}</p>
+        <div class="container">
+            <h1><i class="fas fa-check-circle"></i> Analysis Complete</h1>
+            <p class="report-name">
+                <i class="fas fa-file-alt"></i> {{ filename }}
+            </p>
+        </div>
     </div>
 
-    <div class="results-content">
+    <div class="container">
         <!-- Summary Card -->
-        <div class="card">
-            <h2>📋 Summary</h2>
-            {% if analysis.get('summary') %}
-            <p>{{ analysis['summary'] }}</p>
-            {% elif analysis.get('error') %}
-            <p style="color: #ef4444;"><strong>Error:</strong> {{ analysis['error'] }}</p>
-            {% else %}
-            <p style="color: #999; font-style: italic;">Unable to generate a summary. Please try uploading the report again.</p>
-            {% endif %}
+        {% if analysis.summary %}
+        <div class="card fade-in">
+            <h2><i class="fas fa-book-open"></i> Report Summary</h2>
+            <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text);">
+                {{ analysis.summary }}
+            </p>
         </div>
-
-        <!-- Disclaimer Card -->
-        <div class="card disclaimer-card">
-            <h3>⚠️ Medical Disclaimer</h3>
-            <p>{{ analysis.get('disclaimer', 'MediLens is an informational tool only. Always consult a healthcare professional for medical decisions.') }}</p>
-        </div>
+        {% endif %}
 
         <!-- Key Findings -->
-        {% if analysis.get('key_findings') %}
-        <div class="card">
-            <h2>🔍 Key Findings</h2>
+        {% if analysis.key_findings %}
+        <div class="card fade-in" style="animation-delay: 0.1s;">
+            <h2><i class="fas fa-star"></i> Key Findings</h2>
             <ul class="findings-list">
-                {% for finding in analysis['key_findings'] %}
+                {% for finding in analysis.key_findings %}
                 <li>{{ finding }}</li>
                 {% endfor %}
             </ul>
         </div>
         {% endif %}
 
-        <!-- Abnormal Values -->
-        {% if analysis.get('abnormal_values') %}
-        <div class="card warning-card">
-            <h2>⚠️ Values Outside Normal Range</h2>
+        <!-- Abnormal Values Warning -->
+        {% if analysis.abnormal_values and analysis.abnormal_values|length > 0 %}
+        <div class="card warning-card fade-in" style="animation-delay: 0.2s;">
+            <h2><i class="fas fa-exclamation-circle"></i> Values Outside Reference Range</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text);">
+                The following values are outside the normal reference range stated in your report:
+            </p>
             <ul class="findings-list">
-                {% for value in analysis['abnormal_values'] %}
+                {% for value in analysis.abnormal_values %}
                 <li>{{ value }}</li>
                 {% endfor %}
             </ul>
+            <p style="margin-top: 1.5rem; font-size: 0.9rem; color: #7f1d1d;">
+                <strong>Note:</strong> Outside range doesn't automatically mean there's a problem. Context matters. Discuss these with your doctor.
+            </p>
         </div>
         {% endif %}
 
         <!-- Medical Terms Explained -->
-        {% if analysis.get('medical_terms_explained') %}
-        <div class="card">
-            <h2>📚 Medical Terms Explained</h2>
+        {% if analysis.medical_terms_explained %}
+        <div class="card fade-in" style="animation-delay: 0.3s;">
+            <h2><i class="fas fa-lightbulb"></i> Medical Terms Explained</h2>
             <div class="terms-grid">
-                {% for term, explanation in analysis['medical_terms_explained'].items() %}
+                {% for term, explanation in analysis.medical_terms_explained.items() %}
                 <div class="term-card">
                     <strong>{{ term }}</strong>
                     <p>{{ explanation }}</p>
@@ -65,10 +68,46 @@
         </div>
         {% endif %}
 
-        <div class="actions">
-            <a href="/saved" class="btn btn-secondary">View All Reports</a>
-            <a href="/upload" class="btn btn-primary">Analyze Another Report</a>
+        <!-- Disclaimer -->
+        <div class="card disclaimer-card fade-in" style="animation-delay: 0.4s;">
+            <h2><i class="fas fa-shield-alt"></i> Important Disclaimer</h2>
+            <p style="margin-bottom: 1rem;">
+                {{ analysis.disclaimer }}
+            </p>
+            <p style="font-weight: 600; color: #92400e;">
+                ⚠️ This analysis is for informational purposes only. It is NOT medical advice. Always consult your healthcare provider for medical decisions.
+            </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions fade-in" style="animation-delay: 0.5s;">
+            <a href="/" class="btn btn-outline">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/upload" class="btn btn-primary">
+                <i class="fas fa-cloud-upload-alt"></i> Analyze Another Report
+            </a>
+            <a href="/saved" class="btn btn-secondary">
+                <i class="fas fa-folder"></i> View Saved Reports
+            </a>
         </div>
     </div>
 </div>
+
+<script>
+    // Animate cards on load
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.card.fade-in');
+        cards.forEach((card) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(10px)';
+            const delay = parseFloat(card.style.animationDelay) || 0;
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, delay * 1000);
+        });
+    });
+</script>
 {% endblock %}

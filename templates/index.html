@@ -1,43 +1,121 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Hero Section -->
 <section class="hero">
     <div class="container">
         <div class="hero-content">
-            <h1>Understanding Your Medical Reports Just Got Easier</h1>
-            <p>Upload your medical report and let AI explain it in simple language</p>
-            <a href="/upload" class="btn btn-primary btn-large">Upload Your Report</a>
+            <h1>Understand Your Medical Reports Instantly</h1>
+            <p>Let AI explain complicated medical terminology and test results in simple, easy-to-understand language</p>
+            <a href="/upload" class="btn btn-primary btn-large">
+                <i class="fas fa-cloud-upload-alt"></i> Upload Your Report
+            </a>
         </div>
     </div>
 </section>
 
+<!-- Features Section -->
 <section class="features">
     <div class="container">
-        <h2>How MediLens Works</h2>
+        <h2><i class="fas fa-sparkles"></i> How MediLens Works</h2>
         <div class="features-grid">
+            <!-- Feature 1 -->
             <div class="feature-card">
-                <div class="feature-icon">📄</div>
-                <h3>Upload PDF</h3>
-                <p>Simply upload your medical report in PDF format</p>
+                <div class="feature-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3>Upload Your PDF</h3>
+                <p>Simply upload your medical report in PDF format. We support scanned documents and digital PDFs.</p>
             </div>
+
+            <!-- Feature 2 -->
             <div class="feature-card">
-                <div class="feature-icon">🤖</div>
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
                 <h3>AI Analysis</h3>
-                <p>Our AI analyzes your report and explains it clearly</p>
+                <p>Our advanced AI analyzes your report and explains it in simple language. No medical degree required.</p>
             </div>
+
+            <!-- Feature 3 -->
             <div class="feature-card">
-                <div class="feature-icon">💾</div>
-                <h3>Save & Compare</h3>
-                <p>Save reports and compare them over time</p>
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Key Findings</h3>
+                <p>We identify important values and flag anything outside normal ranges for your attention.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Terms Explained</h3>
+                <p>Every medical term is explained in simple language. No jargon, just clear explanations.</p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-save"></i>
+                </div>
+                <h3>Save & Organize</h3>
+                <p>Save your analyzed reports and access them anytime. Build your medical record history.</p>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Compare Reports</h3>
+                <p>Track changes over time by comparing reports from different dates. See what improved or changed.</p>
             </div>
         </div>
     </div>
 </section>
 
+<!-- CTA Section -->
 <section class="cta">
     <div class="container">
         <h2>Ready to understand your medical reports?</h2>
-        <a href="/upload" class="btn btn-secondary">Get Started</a>
+        <p>Join thousands who use MediLens to make sense of their health data</p>
+        <a href="/upload" class="btn btn-secondary btn-large">
+            <i class="fas fa-arrow-right"></i> Get Started Now
+        </a>
     </div>
 </section>
+
+<!-- Medical Disclaimer -->
+<section class="features">
+    <div class="container">
+        <div class="card disclaimer-card">
+            <h2><i class="fas fa-exclamation-triangle"></i> Important Medical Disclaimer</h2>
+            <p><strong>MediLens is an informational tool only.</strong> It is NOT a substitute for professional medical advice, diagnosis, or treatment.</p>
+            <p style="margin-top: 1rem;">
+                ✓ Always consult with a qualified healthcare professional for any medical concerns<br>
+                ✓ Do not make medical decisions based solely on this tool's output<br>
+                ✓ In case of emergencies, seek immediate medical attention<br>
+                ✓ Your privacy and data security are important to us
+            </p>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Animate features on load
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.feature-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease-out';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    });
+</script>
 {% endblock %}
