@@ -11,8 +11,9 @@ MediLens helps users understand medical reports by extracting text, analyzing it
 ## Features (Current)
 
 ✅ **Upload Medical Reports** - Upload PDF medical reports  
-✅ **AI-Powered Analysis** - Google Gemini analyzes reports and explains findings  
+✅ **AI-Powered Analysis** - Groq analyzes reports and explains findings  
 ✅ **Simple Explanations** - Medical terminology explained in plain language  
+✅ **Regional Language Translation** - Translate explanations while preserving test names, values, and units  
 ✅ **Save Reports** - Store reports locally and access them anytime  
 ✅ **View History** - See all your uploaded reports with dates  
 ✅ **Delete Reports** - Remove reports you no longer need  
@@ -30,8 +31,8 @@ MediLens helps users understand medical reports by extracting text, analyzing it
 - **Backend:** Python + Flask
 - **Frontend:** HTML + CSS + JavaScript
 - **Database:** SQLite
-- **PDF Processing:** Direct PDF input to Google Gemini
-- **AI:** Google Gemini API
+- **PDF Processing:** pdfplumber text extraction for text-based PDFs
+- **AI:** Groq API
 - **Deployment:** Flask dev server (local) / Can scale with Gunicorn
 
 ---
@@ -74,12 +75,12 @@ pip install -r requirements.txt
 
 ### Step 4: Set Up API Key
 
-1. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
+1. Get your API key from [Groq Console](https://console.groq.com/keys)
 2. Create a `.env` file in the project root:
    ```
-  GEMINI_API_KEY=your_google_ai_studio_key
+   GROQ_API_KEY=your_groq_api_key
    ```
-3. Replace `YOUR_KEY_HERE` with your actual key
+3. Replace the placeholder with your actual key. Uploaded PDFs need selectable text; scanned PDFs are not OCR-processed.
 
 ### Step 5: Run the App
 
@@ -99,10 +100,12 @@ Open your browser and go to: **http://localhost:5000**
 ## How It Works
 
 1. **Upload** → User uploads a medical report (PDF format)
-2. **Analyze** → The PDF is sent directly to Google Gemini for analysis
-3. **Display** → AI-generated summary, key findings, and explanations shown
-4. **Save** → Report is stored in local SQLite database
-5. **Access** → User can view saved reports anytime
+2. **Extract** → Text is read from text-based PDF pages
+3. **Analyze** → Extracted text is sent to Groq for analysis
+4. **Display** → AI-generated summary, key findings, and explanations shown
+5. **Translate** → Explanations can be translated from the results page
+6. **Save** → Report is stored in local SQLite database
+7. **Access** → User can view saved reports anytime
 
 ### User Flow
 
@@ -138,9 +141,9 @@ MediLens/
 
 ## API & Database
 
-### Google Gemini API Integration
+### Groq API Integration
 
-The app sends uploaded PDF reports to the Gemini model configured in `app.py`. The system prompt instructs Gemini to:
+The app extracts report text locally and sends it to the Groq model configured in `app.py`. The system prompt instructs the model to:
 - Summarize the report in simple language
 - Identify important test values
 - Flag values outside normal ranges
@@ -158,7 +161,7 @@ The app sends uploaded PDF reports to the Gemini model configured in `app.py`. T
 | extracted_text | TEXT | Reserved for extracted report text |
 | summary | TEXT | AI summary |
 | key_findings | TEXT | JSON list of findings |
-| analysis_data | TEXT | Full JSON response from Gemini |
+| analysis_data | TEXT | Full JSON response from the AI model |
 
 ---
 
@@ -167,7 +170,7 @@ The app sends uploaded PDF reports to the Gemini model configured in `app.py`. T
 - ❌ No user authentication (all reports are in one shared database)
 - ❌ Compare reports feature not yet implemented
 - ❌ No email/export functionality
-- ⚠️ Requires a valid Google Gemini API key and available quota
+- ⚠️ Requires a valid Groq API key and available quota
 
 ---
 
@@ -175,10 +178,10 @@ The app sends uploaded PDF reports to the Gemini model configured in `app.py`. T
 
 ### "No summary available" after upload
 **Issue:** API key is invalid or not set  
-**Fix:** Check that `.env` contains a valid `GEMINI_API_KEY`, then restart the app
+**Fix:** Check that `.env` contains a valid `GROQ_API_KEY`, then restart the app
 
-### Gemini reports that the service is temporarily unavailable
-**Issue:** Gemini may be experiencing high demand or a temporary outage  
+### Groq reports that the service is temporarily unavailable
+**Issue:** Groq may be experiencing high demand or a temporary outage  
 **Fix:** Retry the upload in a minute. The app retries temporary service errors automatically.
 
 ### "Error uploading file"
